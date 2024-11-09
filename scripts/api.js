@@ -1,0 +1,207 @@
+
+class IBotController {
+
+    constructor(host = null) {
+        this.host = host;
+    }
+
+    setHost(host) {
+        this.host = host;
+    }
+
+    getHost() {
+        return this.host;
+    }
+
+    setSwagger(swagger) {
+        this.swagger = swagger;
+    }
+
+    getSwagger() {
+        return this.swagger;
+    }
+
+    uploadFiles(files) {
+        throw new Error('Method not implemented');
+    }
+
+    getFiles() {
+        throw new Error('Method not implemented');
+    }
+
+    getFile(filename) {
+        throw new Error('Method not implemented');
+    }
+
+    deleteFile(filename) {
+        throw new Error('Method not implemented');
+    }
+
+    queryBot(query, files = null) {
+        throw new Error('Method not implemented');
+    }
+
+    queryBotStream(query, files = null) {
+        throw new Error('Method not implemented');
+    }
+}
+
+const DEFAULT_HEADERS = {'Content-Type': 'application/json', 'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'};
+
+class BotController extends IBotController{
+
+    constructor(host) {
+        super(host);
+        this.setSwagger(`${host}/swagger-ui`);
+        this.api_base = "/api/v1"
+        this.apiConf = new ApiConfigStorage();
+    }
+
+    request(method, endpoint, data = null, headers = DEFAULT_HEADERS, toJson = true) {
+        return fetch(`${this.host}${this.api_base}/${endpoint}`, {
+            method: method,
+            headers: headers,
+            body: data ? (toJson ? JSON.stringify(data) : data) : null,
+        })
+            .then(async response => {
+                if (!response.ok) {
+                    throw new FetchError(`[${response.status}] ${response.statusText}`, await response.json(), response.status);
+                }
+                return response;
+            });
+    }
+
+    #configFiles(){
+        const conf = this.apiConf.getApiConfig();
+        return {
+            "vector_database_settings": conf.vector_database,
+            "document_database_settings": conf.doc_database,
+            "mode": conf.bot.mode,
+            "main_mode": `${conf.bot.main_mode}`
+        }
+    }
+
+    #configFilesUpload(formData, stream=false){
+        const conf = this.apiConf.getApiConfig();
+        let settings = {
+            "vector_database_settings": conf.vector_database,
+            "document_database_settings": conf.doc_database,
+            "embedding_settings": conf.embedding,
+            "mode": conf.bot.mode,
+            "main_mode": `${conf.bot.main_mode}`,
+            "split_settings": conf.splitter,
+            "stream": stream,
+            "save_file": true,
+        }
+        formData.append('settings', JSON.stringify(settings));
+        return formData;
+    }
+
+    #configBot(query, chatHistory=[], files=null, stream=false){
+        const conf = this.apiConf.getApiConfig();
+        return {
+            "vector_database_settings": conf.vector_database,
+            "document_database_settings": conf.doc_database,
+            "embedding_settings": conf.embedding,
+            "llm_settings": conf.llm,
+            "rerank_settings": conf.rerank,
+            "mode": conf.bot.mode,
+            "main_mode": `${conf.bot.main_mode}`,
+            "settings": {
+                "add_thumbnail": conf.bot.add_thumbnail,
+                "mult_top_k": conf.bot.mult_top_k,
+                "top_history": conf.bot.top_history,
+                "scorer": conf.bot.scorer,
+                "stream": stream
+            },
+            "filenames": files,
+            "history": chatHistory,
+            "query": query
+        }
+
+    }
+
+    getFiles(){
+        return this.request('POST', 'file/index', this.#configFiles()).then(response => response.json());
+    }
+
+
+    getFileURL(filename){
+        return `${this.host}${this.api_base}/file/${filename}`;
+    }
+
+    queryBot(query, files = null) {
+        let data = {query: query};
+
+        return this.request('POST', 'bot' + (files != null ? `?files=${files}` : ''), data)
+            .then(response => response.json());
+    }
+
+    queryBotStream(query, chatHistory=[], files = null) {
+        return this.request('POST', 'bot', JSON.stringify(this.#configBot(query, chatHistory, files, true)), DEFAULT_HEADERS, false)
+    }
+
+    uploadFiles(formData) {
+        return this.request('POST', 'file', this.#configFilesUpload(formData), {'Access-Control-Allow-Origin': '*'}, false);
+    }
+
+    uploadFilesStream(formData) {
+        return this.request('POST', 'file', this.#configFilesUpload(formData, true), {'Access-Control-Allow-Origin': '*'}, false);
+    }
+
+    removeFile(filename){
+        return this.request('DELETE', `file/index/${filename}`, this.#configFiles(), {'Access-Control-Allow-Origin': '*'}, false);
+    }
+
+    getVendorInfo(vendor){
+        return this.request('GET', `vendor?type=${vendor}`).then(response => response.json());
+    }
+
+    async testConfig(endpoint, config){
+
+        try{
+
+            let response = await this.request('POST', endpoint, config);
+            
+            if(response.status == 204) return {ok: true, data: {}};
+            return {ok: response.status < 400, data: await response.json(), status: response.status};
+        }catch(e){
+            return {ok: false, data: e.data, status: e.status, errMessage: e.message};
+        }
+        
+    }
+
+}
+
+async function* stream(response){
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let done = false;
+
+    let accumulatedJson = "";
+
+    while (!done) {
+        const { value, done: streamDone } = await reader.read();
+        done = streamDone;
+
+        if (value) {
+            let chunks = decoder.decode(value, { stream: true });
+
+            accumulatedJson += chunks;
+
+            accumulatedJson = accumulatedJson.replaceAll("data: {", ",{");
+
+            try {
+              const json = JSON.parse(`[{}${accumulatedJson}]`);
+
+              yield json;
+
+              accumulatedJson = "";
+
+            } catch (error) {
+            }
+          
+        }
+    }
+    
+}

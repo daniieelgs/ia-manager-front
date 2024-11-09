@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/chat.css">
+    <link rel="stylesheet" href="styles/view.css">
+    <link rel="stylesheet" href="styles/modal.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="header"></div>
+
+    <div id="main">
+
+        <div id="control-container">
+
+            <button id="settings-btn"></button>
+
+            <div id="api-container">
+                <h4 class="title-container">API <i class="add-btn" id="add-api"></i><i class="remove-btn" id="remove-api"></i></h4>
+                <div class="container">
+                    
+                    <select name="api" id="api-selector">
+                    </select>
+
+                    <div id="api-parameters">
+                       <a href="#" target="_blank" id="api-host"></a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="file-collection">
+                <h4 class="title-container">File Collection</h4>
+                <div class="container">
+                    
+
+                    <div>
+                        <input type="radio" name="collection-type" id="collection-all" checked>
+                        <label for="collection-all"><i></i>Search All</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="collection-type" id="collection-own">
+                        <label for="collection-own"><i></i>Search In File(s)</label>
+                    </div>
+
+                    <div id="collection-own-container">
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div id="uploader-container">
+                <h4 class="title-container">Quick Upload</h4>
+                <div class="container">
+                    <div>
+                        <i class="icon"></i>
+                        <span>Drag and drop files here</span>
+                        <span>or</span>
+                        <label for="uploader">Click to browse</label>
+                    </div>
+                    <input type="file" id="uploader" multiple accept=".pdf">
+                    <div id="file-list"></div>
+                </div>
+                <div class="button-container">
+                    <input type="button" value="Upload" id="upload-files-btn">
+                </div>
+            </div>
+
+            <div id="indexed-files">
+                <h4 class="title-container">Indexed Files</h4>
+                <div class="container" id="indexed-files-list">
+                    
+                </div>
+            </div>
+
+        </div>
+
+        <div id="chat-container">
+
+            <div class="chat-viewer"></div>
+
+            <div id="chat-footer">
+                <input type="text" id="chat-input" placeholder="Type a message...">
+                <input type="button" value="Send" id="send-btn">
+                <input type="button" value="Clear" id="regenerate-btn">
+            </div>
+
+        </div>
+
+        <div id="view-container"></div>
+
+    </div>
+
+    <script src="scripts/errors/FetchError.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/types_settings.js"></script>
+    <script src="scripts/modal.js"></script>
+    <script src="scripts/api.js"></script>
+    <script src="scripts/chat.js"></script>
+    <script src="scripts/index.js"></script>
+    <script src="scripts/view.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,459 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+#main{
+    display: grid;
+    flex-grow: 1;
+
+    grid-template-areas: 
+    "control chat chat view view";
+
+    height: 100%;
+    width: 100%;
+
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(5, 1fr);
+
+    padding: 10px;
+
+    box-sizing: border-box;
+}
+
+#main > div{
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+#control-container{
+    position: relative;
+    grid-area: control;
+    padding: 30px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+} 
+
+#chat-container{
+    grid-area: chat;
+}
+
+#view-container{
+    grid-area: view;
+}
+
+/*API selector*/
+
+#api-host{
+    text-wrap: nowrap;
+    max-width: 100%;
+    width: 100%;
+    /*show three dots*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+select{
+
+    padding: 10px;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+
+}
+
+#api-parameters a{
+    color: #007BFF;
+    text-decoration: none;
+}
+
+/*File Collection*/
+
+#file-collection .container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+input[type="radio"] ~ label {
+
+    background-color: rgb(235, 235, 235);
+    color: #000;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    padding: 10px;
+    border-radius: 15px;
+
+    cursor: pointer;
+
+}
+
+input[type="radio"] ~ label > i{
+    display: inline-block;
+    background-image: url(../images/icons/radio.png);
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+}
+
+input[type="radio"]:checked ~ label {
+
+    background-color: rgb(36, 216, 132);
+    color: #fff;
+
+}
+
+input[type="radio"]:checked ~ label > i{
+    background-image: url(../images/icons/radio-selected.png);
+}
+
+/*Upload Files*/
+
+#uploader-container .container{
+    padding: 15px;
+    height: fit-content;
+    border: 2px dashed #007BFF;
+    border-radius: 10px;
+    background-color: #fff;
+    text-align: center;
+    position: relative;
+    color: #24d884;
+}
+
+#uploader-container .container > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#uploader-container .container span, #uploader-container .container label{
+    opacity: 0.5;
+}
+
+#uploader-container .container label{
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+}
+
+#uploader-container .container label:hover{
+    opacity: 1;
+}
+
+#file-list {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+#file-list p {
+    margin-bottom: 5px;
+    padding: 10px 44px 10px 10px;
+    background-color: #f0f8ff;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#file-list p i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #dc3545;
+    font-size: 1.5em;
+}
+
+#uploader-container .container input[type="file"]{
+    display: none;
+}
+
+#uploader-container .container .icon{
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url(../images/icons/upload.png);
+}
+
+
+#uploader-container .container.highlight{
+    border: 2px solid #00aaff;
+    background-color: #e6f7ff;
+}
+
+.button-container{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+#upload-files-btn{
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/*Indexed Files*/
+
+#indexed-files-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+#indexed-files-list .file-item{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 44px 10px 10px;
+    border: 1px solid #007BFF;
+    background-color: #f0f8ff;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000;
+    text-decoration: none;
+    text-wrap: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#indexed-files-list .file-item i{
+    color: #dc3545;
+    font-size: 1.5em;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+}
+
+p.error{
+    background-color: #dc3545;
+    color: #fff;
+    width: max-content;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}   
+
+/* File Collection */
+
+.collection-own-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dropdown{
+    transition: all .5s;
+    overflow: hidden;
+}
+
+.file-item-checkbox-container{
+    background-color: rgba(113, 235, 178, 0.411);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    
+    margin: 10px 0;
+    border: 1px solid rgb(43, 99, 73);
+    gap: 10px;
+    cursor: pointer;
+}
+
+.file-item-checkbox-container *{
+    cursor: pointer;
+}
+
+.file-item-checkbox-container > label{
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.container{
+    position: relative;
+}
+
+.container .loading{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
+    border-radius: 20px;
+}
+
+.container .loading img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.title-container{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+i.add-btn{
+    display: inline-block;
+    background-image: url(../images/icons/add.png);
+    background-size: cover;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+}
+
+i.add-btn:hover{
+    background-image: url(../images/icons/add_hover.png);
+}
+
+i.remove-btn{
+    display: inline-block;
+    background-image: url(../images/icons/remove.png);
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+i.remove-btn:hover{
+    background-image: url(../images/icons/remove_hover.png);
+}
+
+#settings-btn{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
+    padding: 7px 10px;
+    background-color: #fff;
+    background-image: url(../images/icons/settings.png);
+    background-size: cover;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+    height: 35px;
+    color: #007BFF;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    outline: none;
+}
+
+#settings-btn:hover{
+    background-color: #007BFF;
+    background-image: url(../images/icons/settings_hover.png);
+}
+
+
+.loading-animation{
+    position: relative;
+}
+
+.loading-animation .loader{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    background-image: url('../images/icons/loading_default.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.logger-container{
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background-color: #ffffff;
+    height: max-content;
+    width: 100%;
+}
+
+.logger-container p{
+    margin: 0;
+    padding: 0;
+}
+
+.logger-container .counter{
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.logger-container .counter .counter-num{
+    color: #007BFF;
+}
+
+.logger-container .log-filename{
+    font-weight: bold;
+    font-size: .9em;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.logger-container .log{
+    font-size: .8em;
+}
+
+.logger-container .log-filename:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
