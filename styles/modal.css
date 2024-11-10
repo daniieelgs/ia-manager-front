@@ -399,6 +399,38 @@ i.close-modal:hover{
     width: 50%;
 }
 
+.profile-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 50%;
+    margin-bottom: 40px;
+}
+
+.profile-container .profile-select-container{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+}
+
+.profile-container .profile-select-container .new-profile{
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 5px 25px;
+    font-size: 1.2em;
+}
+
+.profile-container label{
+    font-size: 1.2em;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+}
+
+.profile-select{
+    width: max-content;
+}
+
 .modal-settings > .settings-content > .vendor > label{
     font-size: 1.2em;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -539,6 +571,11 @@ i.close-modal:hover{
 
 .modal-settings .btn-container > button.btn-save:hover{
     background-color: #0056b3;
+}
+
+.modal-settings .btn-container > button.btn-save:disabled{
+    background-color: #444;
+    cursor: not-allowed;
 }
 
 

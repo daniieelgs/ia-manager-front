@@ -347,8 +347,8 @@ i.add-btn{
     display: inline-block;
     background-image: url(../images/icons/add.png);
     background-size: cover;
-    width: 26px;
-    height: 26px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
 }
 
@@ -367,6 +367,33 @@ i.remove-btn{
 
 i.remove-btn:hover{
     background-image: url(../images/icons/remove_hover.png);
+}
+
+i.confirm-btn{
+    display: inline-block;
+    background-image: url(../images/icons/confirm.png);
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+i.confirm-btn:hover{
+    background-image: url(../images/icons/confirm_hover.png);
+}
+
+
+i.cancel-btn{
+    display: inline-block;
+    background-image: url(../images/icons/cancel.png);
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+i.cancel-btn:hover{
+    background-image: url(../images/icons/cancel_hover.png);
 }
 
 #settings-btn{

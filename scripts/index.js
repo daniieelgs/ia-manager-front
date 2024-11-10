@@ -127,7 +127,7 @@ function handleDrop(e) {
     files = [...files].filter(file => file.type === 'application/pdf');
 
     if(preLength !== files.length){
-        new NotificationModal().show('Solo se permiten archivos PDF.', NOTIFICATION_ERROR);
+        globalNotification.show('Solo se permiten archivos PDF.', NOTIFICATION_ERROR);
     }
 
     
@@ -269,18 +269,18 @@ document.getElementById('upload-files-btn').addEventListener('click', async e =>
             }
         
             if(filesUploaded.length > 0){
-                new NotificationModal().show('No se pudieron subir todos los archivos.', NOTIFICATION_WARNING);
+                globalNotification.show('No se pudieron subir todos los archivos.', NOTIFICATION_WARNING);
+            }else{
+                globalNotification.show('Archivos subidos correctamente.', NOTIFICATION_SUCCESS);
             }
 
             // filesUploaded = [];
 
             displayFiles(filesUploaded);
 
-            new NotificationModal().show('Archivos subidos correctamente.', NOTIFICATION_SUCCESS);
-
         }catch(err){
                 console.log(err.data);
-                new NotificationModal().show('Error al subir los archivos.', NOTIFICATION_ERROR);
+                globalNotification.show('Error al subir los archivos.', NOTIFICATION_ERROR);
         }finally{
             loading.remove();
             e.target.style.display = 'block';
@@ -356,11 +356,11 @@ function updateFileList(){
                     .then(response => {
                         console.log(response);
                         updateFileList();
-                        new NotificationModal().show('Archivo eliminado correctamente.', NOTIFICATION_SUCCESS);
+                        globalNotification.show('Archivo eliminado correctamente.', NOTIFICATION_SUCCESS);
                     })
                     .catch(err => {
                         console.error(err);
-                        new NotificationModal().show('Error al eliminar el archivo.', NOTIFICATION_ERROR);
+                        globalNotification.show('Error al eliminar el archivo.', NOTIFICATION_ERROR);
                     })
                     .finally(() => stopLoader(filesList));
 
@@ -468,8 +468,13 @@ document.getElementById('settings-btn').addEventListener('click', e => {
     if(!!modal && modal.isOpen) return;
     modal = new SettingsModal(botController, new ApiConfigStorage());
     modal.open();
-});
 
+    modal.on_close(() => {
+        updateFileList();
+        setUpChat();
+    });
+
+});
 // Loader Container
 function startLoader(container){
     const loader = document.createElement('div');

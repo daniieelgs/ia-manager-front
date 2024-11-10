@@ -46,9 +46,9 @@ const TYPES = [
         ]
     },
     {
-        name: "Bot",
+        name: "Bot Settings",
         vendor: "bot",
-        conf: "bot",
+        conf: "bot_settings",
         additonal_settings: [
             {
                 name: "main_mode",

@@ -72,23 +72,23 @@ class BotController extends IBotController{
     }
 
     #configFiles(){
-        const conf = this.apiConf.getApiConfig();
+        const conf = this.apiConf.getApiBotConfig();
         return {
             "vector_database_settings": conf.vector_database,
             "document_database_settings": conf.doc_database,
-            "mode": conf.bot.mode,
-            "main_mode": `${conf.bot.main_mode}`
+            "mode": conf.bot_settings.mode,
+            "main_mode": `${conf.bot_settings.main_mode}`
         }
     }
 
     #configFilesUpload(formData, stream=false){
-        const conf = this.apiConf.getApiConfig();
+        const conf = this.apiConf.getApiBotConfig();
         let settings = {
             "vector_database_settings": conf.vector_database,
             "document_database_settings": conf.doc_database,
             "embedding_settings": conf.embedding,
-            "mode": conf.bot.mode,
-            "main_mode": `${conf.bot.main_mode}`,
+            "mode": conf.bot_settings.mode,
+            "main_mode": `${conf.bot_settings.main_mode}`,
             "split_settings": conf.splitter,
             "stream": stream,
             "save_file": true,
@@ -98,20 +98,20 @@ class BotController extends IBotController{
     }
 
     #configBot(query, chatHistory=[], files=null, stream=false){
-        const conf = this.apiConf.getApiConfig();
+        const conf = this.apiConf.getApiBotConfig();
         return {
             "vector_database_settings": conf.vector_database,
             "document_database_settings": conf.doc_database,
             "embedding_settings": conf.embedding,
             "llm_settings": conf.llm,
             "rerank_settings": conf.rerank,
-            "mode": conf.bot.mode,
-            "main_mode": `${conf.bot.main_mode}`,
+            "mode": conf.bot_settings.mode,
+            "main_mode": `${conf.bot_settings.main_mode}`,
             "settings": {
-                "add_thumbnail": conf.bot.add_thumbnail,
-                "mult_top_k": conf.bot.mult_top_k,
-                "top_history": conf.bot.top_history,
-                "scorer": conf.bot.scorer,
+                "add_thumbnail": conf.bot_settings.add_thumbnail,
+                "mult_top_k": conf.bot_settings.mult_top_k,
+                "top_history": conf.bot_settings.top_history,
+                "scorer": conf.bot_settings.scorer,
                 "stream": stream
             },
             "filenames": files,
