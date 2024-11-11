@@ -466,12 +466,12 @@ document.getElementById('collection-own').addEventListener('change', e => {
 let modal = null;
 document.getElementById('settings-btn').addEventListener('click', e => {
     if(!!modal && modal.isOpen) return;
-    modal = new SettingsModal(botController, new ApiConfigStorage());
+    if(!modal) modal = new SettingsModal(botController, new ApiConfigStorage());
     modal.open();
 
     modal.on_close(() => {
         updateFileList();
-        setUpChat();
+        clearChat();
     });
 
 });

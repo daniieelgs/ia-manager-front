@@ -87,7 +87,7 @@ class SettingsModal extends Modal {
 
             for(let setting of this.confInputs.settings ?? []){
                 if(!setting.input.value) continue;
-                data.settings[setting.field] = setting.field === 'Boolean' ? setting.input.checked : setting.input.value;
+                data.settings[setting.field] = setting.type === 'Boolean' ? setting.input.checked : setting.input.value;
             }
 
             for(let setting of this.confInputs.additional_settings ?? []){
@@ -349,24 +349,31 @@ class SettingsModal extends Modal {
                         else if(settings.type == "List") input.type = "text";
                         else if(settings.type == "Dict") input.type = "text";
                         else input.type = "text";
-                        console.log((typeConfig.vendor == vendor.value ? typeConfig.settings[settings.field] : null) || (settings.default == "None" ? "" : settings.default))
-                        input.value = (typeConfig.vendor == vendor.value ? typeConfig.settings[settings.field] : null) || (settings.default == "None" ? "" : settings.default);
-                        input.placeholder = settings.description;
-                        input.id = settings.field;
+                        
+                        let container = document.createElement('div');
+                        container.classList.add('form-group');
+
 
                         let label = document.createElement('label');
                         label.innerHTML = settings.field;
                         label.htmlFor = settings.field;
 
-                        let container = document.createElement('div');
-                        container.classList.add('form-group');
-                        container.appendChild(label);
-                        container.appendChild(input);
+                        input.id = settings.field;
+
                         if(settings.type == "Boolean") {
-                            input.checked = typeConfig.settings[settings] || (settings.default == "None" ? "" : settings.default);
+                            input.checked = (typeConfig.vendor == vendor.value ? typeConfig.settings[settings.field] : false) || (settings.default == "None" ? false : settings.default == "True");
+                            console.log(input.checked)
                             container.style.flexDirection = "row";
                             label.style.gap = "2px";
+                        }else {
+                            input.value = (typeConfig.vendor == vendor.value ? typeConfig.settings[settings.field] : null) || (settings.default == "None" ? "" : settings.default);
+                            input.placeholder = settings.description;
                         }
+
+
+                        container.appendChild(label);
+                        container.appendChild(input);
+                        
 
                         settingsForm.appendChild(container);
 

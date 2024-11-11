@@ -6,8 +6,9 @@ let chatViewer = null;
 const inputMessage = document.getElementById('chat-input');
 const btnSend = document.getElementById('send-btn');
 const btnRegen = document.getElementById('regenerate-btn');
+const titleLabel = document.getElementById('title-chat');
 
-let idInterval = null;
+let idInterval = null, idIntervalTitle = null;
 
 let chatHistory = [];
 
@@ -31,7 +32,7 @@ const sendMessages = async (messages = null) => {
         firstChunk = true;
         let cut = 0;
         let initTimer = new Date().getTime();
-        for await (const json of stream(await botController.queryBotStream(message, chatHistory.slice(0, -1), filter_files == 'own' ? filter_files_own : null))) {
+        for await (const json of stream(await botController.queryBotStream(message, chatHistory.slice(0, -2), filter_files == 'own' ? filter_files_own : null))) {
             for(data of json){
 
                 if(data.response){
@@ -45,16 +46,30 @@ const sendMessages = async (messages = null) => {
 
                     totalResponse += data.response;
 
-                    cut = await writeEfectMessageBot(totalResponse, 10, messageElement, cut);
+                    cut = writeEfectMessageBot(totalResponse, 10, messageElement, cut);
 
                     chatViewer.scrollTop = chatViewer.scrollHeight;
 
                 }else if(data.chunk){
                     addResult(data.chunk);
+                }else if(data.title){
+                    console.log('Title:', data.title);
+                    if(idIntervalTitle) clearInterval(idIntervalTitle);
+                    titleLabel.textContent = '';
+                    let i = 0;
+                    idIntervalTitle = setInterval(() => {   
+                        titleLabel.textContent += data.title[i];
+                        i++;
+                        if(i === data.title.length){
+                            clearInterval(idIntervalTitle);
+                        }
+                    }, 10);  
                 }
-
             }
-        }    
+        }   
+        
+        chatHistory[chatHistory.length - 1].message = totalResponse;
+
     }catch(e){
         console.log(e.data);
         clearInterval(idIntervalEllipsis);
@@ -93,6 +108,7 @@ function setUpChat(){
 function setMessage(data){
 
     let message = document.createElement('div');
+    message.id = crypto.randomUUID();
     message.classList.add('message');
     message.classList.add(data.type);
 
@@ -119,17 +135,23 @@ function setMessageUser(msg){
 
 function clearChat(){
     chatViewer.innerHTML = '';
+    titleLabel.innerHTML = '';
+    chatHistory = [];
+    clearResults();
 }
 
 function writeEfectMessageBot(mesage, time = 10, messageContent = null, cut = 0) {
 
-    return new Promise((resolve, reject) => {
+    const promise = new Promise(async (resolve, reject) => {
+
+        cut = await cut;
+        
         let convertedHTML = markdownToHTML(mesage);
 
         let i = cut;
 
         let interval = setInterval(() => {
-            if(i === convertedHTML.length){
+            if(i >= convertedHTML.length){
                 clearInterval(interval);
                 cut = convertedHTML.length;
                 resolve(cut);
@@ -152,6 +174,8 @@ function writeEfectMessageBot(mesage, time = 10, messageContent = null, cut = 0)
         }, time);
 
     });
+
+    return promise;
 }
 
 

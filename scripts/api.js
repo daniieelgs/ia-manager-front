@@ -188,20 +188,27 @@ async function* stream(response){
             let chunks = decoder.decode(value, { stream: true });
 
             accumulatedJson += chunks;
-
+            
             accumulatedJson = accumulatedJson.replaceAll("data: {", ",{");
 
             try {
               const json = JSON.parse(`[{}${accumulatedJson}]`);
-
               yield json;
 
               accumulatedJson = "";
 
             } catch (error) {
             }
-          
         }
     }
-    
+
+    if (accumulatedJson) {
+        try {
+            const json = JSON.parse(`[{}${accumulatedJson}]`);
+            yield json;
+        } catch (error) {
+        }
+    }
 }
+
+//gpt-4o-mini

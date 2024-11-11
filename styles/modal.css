@@ -610,6 +610,11 @@ i.close-modal:hover{
     font-weight: bold;
 }
 
+.modal-settings > .settings-content .preview .preview-section .settings-list li{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .modal-settings > .settings-content .preview .btn-reset{
 
     background-color: #444;
