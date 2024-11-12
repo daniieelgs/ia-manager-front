@@ -44,6 +44,26 @@ class IBotController {
     queryBotStream(query, files = null) {
         throw new Error('Method not implemented');
     }
+
+    getVendorInfo(vendor) {
+        throw new Error('Method not implemented');
+    }
+
+    getAllIndex(settings) {
+        throw new Error('Method not implemented');
+    }
+
+    checkCompatibility(data) {
+        throw new Error('Method not implemented');
+    }
+
+    testConfig(endpoint, config) {
+        throw new Error('Method not implemented');
+    }
+
+    hardReset(data) {
+        throw new Error('Method not implemented');
+    }
 }
 
 const DEFAULT_HEADERS = {'Content-Type': 'application/json', 'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'};
@@ -112,7 +132,8 @@ class BotController extends IBotController{
                 "mult_top_k": conf.bot_settings.mult_top_k,
                 "top_history": conf.bot_settings.top_history,
                 "scorer": conf.bot_settings.scorer,
-                "stream": stream
+                "stream": stream,
+                "stream_chunks": true
             },
             "filenames": files,
             "history": chatHistory,
@@ -121,8 +142,8 @@ class BotController extends IBotController{
 
     }
 
-    getFiles(){
-        return this.request('POST', 'file/index', this.#configFiles()).then(response => response.json());
+    getFiles(data = null){
+        return this.request('POST', 'file/index', data ?? this.#configFiles()).then(response => response.json());
     }
 
 
@@ -155,6 +176,19 @@ class BotController extends IBotController{
 
     getVendorInfo(vendor){
         return this.request('GET', `vendor?type=${vendor}`).then(response => response.json());
+    }
+
+    getAllIndex(settings){
+        return this.request('POST', 'database/index/all', settings).then(response => response.json());
+    }
+
+    
+    checkCompatibility(data){
+        return this.request('POST', 'develop/database/check-compatibility', data).then(response => response.json());
+    }
+
+    hardReset(data) {
+        throw new Error('Method not implemented');
     }
 
     async testConfig(endpoint, config){

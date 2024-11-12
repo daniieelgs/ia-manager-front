@@ -405,6 +405,7 @@ function updateFileList(){
     })
     .catch(err => {
         console.log(err.data);
+        filesList.innerHTML = '';
         let msgError = document.createElement('p');
         msgError.classList.add('error');
         msgError.textContent = `No se pudieron obtener los archivos.`;
@@ -464,9 +465,11 @@ document.getElementById('collection-own').addEventListener('change', e => {
 
 // Settings
 let modal = null;
+let confApi = new ApiConfigStorage();
 document.getElementById('settings-btn').addEventListener('click', e => {
     if(!!modal && modal.isOpen) return;
-    if(!modal) modal = new SettingsModal(botController, new ApiConfigStorage());
+    if(!modal) modal = new SettingsModal(botController, confApi);
+    modal.botController = botController;
     modal.open();
 
     modal.on_close(() => {
@@ -475,16 +478,15 @@ document.getElementById('settings-btn').addEventListener('click', e => {
     });
 
 });
-// Loader Container
-function startLoader(container){
-    const loader = document.createElement('div');
-    loader.classList.add('loader');
-    container.appendChild(loader);
-    container.classList.add('loading-animation');
-}
 
-function stopLoader(container){
-    let loader = container.querySelector('.loader')
-    if(loader) loader.remove();
-    container.classList.remove('loading-animation');
-}
+let dbModal = null;
+
+document.getElementById('documents-btn').addEventListener('click', e => {
+    
+    if(!!dbModal && dbModal.isOpen) return;
+    if(!dbModal) dbModal = new DatabaseModal(botController, confApi);
+    dbModal.botController = botController;
+
+    dbModal.open();
+
+});

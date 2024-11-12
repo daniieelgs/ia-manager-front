@@ -34,9 +34,16 @@ body{
     box-sizing: border-box;
 }
 
-#main > div{
+#main > div.section-container{
     background-color: #fff;
     border-radius: 10px;
+}
+
+#main > div.resizable{
+    flex: 1;
+    resize: horizontal;
+    overflow: auto;
+    min-width: 10%;
 }
 
 #control-container{
@@ -66,6 +73,11 @@ body{
     text-overflow: ellipsis;
     white-space: nowrap;
     display: inline-block;
+}
+
+#api-host:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 select{
@@ -130,6 +142,10 @@ input[type="radio"]:checked ~ label {
 
 input[type="radio"]:checked ~ label > i{
     background-image: url(../images/icons/radio-selected.png);
+}
+
+.collection-type-label:hover{
+    background-color: rgb(223, 236, 226)
 }
 
 /*Upload Files*/
@@ -230,6 +246,10 @@ input[type="radio"]:checked ~ label > i{
     cursor: pointer;
     font-size: 1.1em;
     font-weight: bold;
+}
+
+#upload-files-btn:hover{
+    background-color: #0056b3;
 }
 
 /*Indexed Files*/
@@ -396,7 +416,7 @@ i.cancel-btn:hover{
     background-image: url(../images/icons/cancel_hover.png);
 }
 
-#settings-btn{
+.conf-btn{
     position: absolute;
     top: 10px;
     right: 10px;
@@ -404,7 +424,6 @@ i.cancel-btn:hover{
     border-radius: 5px;
     padding: 7px 10px;
     background-color: #fff;
-    background-image: url(../images/icons/settings.png);
     background-size: cover;
     background-size: 20px;
     background-repeat: no-repeat;
@@ -417,22 +436,41 @@ i.cancel-btn:hover{
     outline: none;
 }
 
+.conf-btn:hover{
+    background-color: #007BFF;
+}
+
+#settings-btn{
+    background-image: url(../images/icons/settings.png);
+}
+
 #settings-btn:hover{
     background-color: #007BFF;
     background-image: url(../images/icons/settings_hover.png);
 }
 
+#documents-btn{
+    right: 55px;
+}
+
+#documents-btn{
+    background-image: url(../images/icons/documents.png);
+}
+
+#documents-btn:hover{
+    background-color: #007BFF;
+    background-image: url(../images/icons/documents_hover.png);
+}
 
 .loading-animation{
     position: relative;
 }
 
 .loading-animation .loader{
-    width: 100%;
-    height: 100%;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 200;
     background-image: url('../images/icons/loading_default.gif');
     background-size: contain;

@@ -16,9 +16,10 @@
 
     <div id="main">
 
-        <div id="control-container">
+        <div id="control-container" class="section-container resizable">
 
-            <button id="settings-btn"></button>
+            <button id="documents-btn" class="conf-btn"></button>
+            <button id="settings-btn" class="conf-btn"></button>
 
             <div id="api-container">
                 <h4 class="title-container">API <i class="add-btn" id="add-api"></i><i class="remove-btn" id="remove-api"></i></h4>
@@ -41,12 +42,12 @@
 
                     <div>
                         <input type="radio" name="collection-type" id="collection-all" checked>
-                        <label for="collection-all"><i></i>Search All</label>
+                        <label class="collection-type-label" for="collection-all"><i></i>Search All</label>
                     </div>
 
                     <div>
                         <input type="radio" name="collection-type" id="collection-own">
-                        <label for="collection-own"><i></i>Search In File(s)</label>
+                        <label class="collection-type-label" for="collection-own"><i></i>Search In File(s)</label>
                     </div>
 
                     <div id="collection-own-container">
@@ -81,7 +82,8 @@
 
         </div>
 
-        <div id="chat-container">
+
+        <div id="chat-container" class="section-container resizable">
 
             <label id="title-chat"></label>
 
@@ -95,15 +97,17 @@
 
         </div>
 
-        <div id="view-container"></div>
+        <div id="view-container" class="section-container resizable"></div>
 
     </div>
 
     <script src="scripts/errors/FetchError.js"></script>
+    <script src="scripts/loader.js"></script>
     <script src="scripts/storage.js"></script>
     <script src="scripts/types_settings.js"></script>
-    <script src="scripts/modal.js"></script>
-    <script src="scripts/SettingsModal.js"></script>
+    <script src="scripts/modals/modal.js"></script>
+    <script src="scripts/modals/SettingsModal.js"></script>
+    <script src="scripts/modals/DatabaseModal.js"></script>
     <script src="scripts/api.js"></script>
     <script src="scripts/chat.js"></script>
     <script src="scripts/index.js"></script>

@@ -211,15 +211,35 @@ class SettingsModal extends Modal {
         this.isOpened = false;
 
         closeBtn.addEventListener('click', this.close.bind(this));
+        
+        this.on_open(() => this.currentSection && this.currentType ? this.#open_section(this.currentSection, this.currentType) : null);
 
     }
 
     #open_section(section, type) {
         document.querySelectorAll('.settings-menu-item').forEach(item => item.classList.remove('selected'));
         section.classList.add('selected');
-        this.botController.getVendorInfo(type.vendor).then(vendorInfo => {
-            this.#build_section.bind(this)(type, vendorInfo);
-        });
+        this.currentSection = section;
+        this.currentType = type;
+        startLoader(this.content, "25%");
+        this.botController.getVendorInfo(type.vendor)
+            .then(vendorInfo => {
+                this.content.innerHTML = '';
+                this.#build_section.bind(this)(type, vendorInfo);
+            })
+            .catch(e => {
+                console.log(e);
+                this.content.innerHTML = '';
+                const error = document.createElement('div');
+                error.classList.add('error');
+                const h1 = document.createElement('h1');
+                h1.innerHTML = 'Error loading configuration';
+                error.appendChild(h1);
+                this.content.appendChild(error);
+            })
+            .finally(() => {
+                stopLoader(this.content);
+            });
     }
 
     #build_section(type, vendorInfo) {
