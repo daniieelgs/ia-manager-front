@@ -293,13 +293,20 @@ input[type="radio"]:checked ~ label > i{
 }
 
 p.error{
-    background-color: #dc3545;
+    background-color: #ff132a;
     color: #fff;
     width: max-content;
     padding: 10px;
     border-radius: 5px;
     font-weight: bold;
+    user-select: none;
+    opacity: .8;
+    transition: all .3s;
 }   
+
+p.error:hover{
+    opacity: 1;
+}
 
 /* File Collection */
 
@@ -434,6 +441,7 @@ i.cancel-btn:hover{
     font-family: Arial, Helvetica, sans-serif;
     cursor: pointer;
     outline: none;
+    transition: all .2s;
 }
 
 .conf-btn:hover{

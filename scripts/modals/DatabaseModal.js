@@ -182,7 +182,9 @@ class DatabaseModal extends Modal{
                 
 
             })
-            .catch(error => {})
+            .catch(error => 
+                resultsContainer.innerHTML = `<p class="error">Error</p>`
+            )
             .finally(() => {
                 stopLoader(resultsContainer.parentElement);
             });
@@ -233,7 +235,7 @@ class DatabaseModal extends Modal{
                 filesSection.appendChild(tableFiles);
                 
             })
-            .catch(error => console.log(error));
+            .catch(error => filesSection.innerHTML = `<p class="error">Error</p>`);
 
     }
 
@@ -354,7 +356,7 @@ class DatabaseModal extends Modal{
                 resultsContainer.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
 
             })
-            .catch(error => console.log(error))
+            .catch(error => resultsContainer.innerHTML = `<p class="error">Error</p>`)
             .finally(() => {
                 stopLoader(resultsContainer.parentElement);
             });
