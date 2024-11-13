@@ -335,6 +335,10 @@
     background-color: #e6e6e6;
 
     overflow: hidden;
+
+    border: 2px solid #333333;
+
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
 }
 
 .modal-settings.show{
@@ -617,7 +621,7 @@ i.close-modal:hover{
     text-overflow: ellipsis;
 }
 
-.settings-content div.error{
+.modal-settings div.error{
     margin: auto;
     background-color: #f30000;
     color: #fff;
@@ -631,7 +635,7 @@ i.close-modal:hover{
     user-select: none;
 }
 
-.settings-content div.error:hover{
+.modal-settings div.error:hover{
     opacity: 1;
 }
 
