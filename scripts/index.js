@@ -468,14 +468,15 @@ let modal = null;
 let confApi = new ApiConfigStorage();
 document.getElementById('settings-btn').addEventListener('click', e => {
     if(!!modal && modal.isOpen) return;
-    if(!modal) modal = new SettingsModal(botController, confApi);
+    if(!modal) {
+        modal = new SettingsModal(botController, confApi);
+        modal.on_close(() => {
+            updateFileList();
+            clearChat();
+        });
+    }
     modal.botController = botController;
     modal.open();
-
-    modal.on_close(() => {
-        updateFileList();
-        clearChat();
-    });
 
 });
 
@@ -484,7 +485,13 @@ let dbModal = null;
 document.getElementById('documents-btn').addEventListener('click', e => {
     
     if(!!dbModal && dbModal.isOpen) return;
-    if(!dbModal) dbModal = new DatabaseModal(botController, confApi);
+    if(!dbModal) {
+        dbModal = new DatabaseModal(botController, confApi);
+        modal.on_close(() => {
+            updateFileList();
+            clearChat();
+        });
+    }
     dbModal.botController = botController;
 
     dbModal.open();

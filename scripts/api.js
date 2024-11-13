@@ -61,6 +61,14 @@ class IBotController {
         throw new Error('Method not implemented');
     }
 
+    createIndex(data) {
+        throw new Error('Method not implemented');
+    }
+
+    removeIndex(data) {
+        throw new Error('Method not implemented');
+    }
+
     hardReset(data) {
         throw new Error('Method not implemented');
     }
@@ -171,7 +179,7 @@ class BotController extends IBotController{
     }
 
     removeFile(filename){
-        return this.request('DELETE', `file/index/${filename}`, this.#configFiles(), {'Access-Control-Allow-Origin': '*'}, false);
+        return this.request('DELETE', `file/index/${filename}`, this.#configFiles());
     }
 
     getVendorInfo(vendor){
@@ -185,6 +193,14 @@ class BotController extends IBotController{
     
     checkCompatibility(data){
         return this.request('POST', 'develop/database/check-compatibility', data).then(response => response.json());
+    }
+
+    createIndex(data){
+        return this.request('POST', 'database', data).then(response => response.json());
+    }
+
+    removeIndex(data){
+        return this.request('DELETE', 'database/index', data);
     }
 
     hardReset(data) {

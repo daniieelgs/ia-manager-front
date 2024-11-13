@@ -725,8 +725,12 @@ i.close-modal:hover{
     width: max-content;
 }
 
-.index-results h3{
-    text-align: center;
+.index-results{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
 .database-content table{
@@ -818,4 +822,36 @@ i.close-modal:hover{
 .database-content ul.errors li{
     list-style: decimal;
     margin: 5px;
+}
+
+.database-content input[type="button"].remove-btn{
+    background-color: #d13030;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 5px 25px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin: 20px auto;
+    font-weight: bold;
+}
+
+.database-content input[type="button"].remove-btn:hover{
+    background-color: #fc2828;
+}
+
+.database-content input[type="button"].create-btn{
+    background-color: #4c9934;
+    color: #fff;
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 5px 25px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin: 20px auto;
+    font-weight: bold;
+}
+
+.database-content input[type="button"].create-btn:hover{
+    background-color: #66af4f;
 }

@@ -159,6 +159,7 @@ class DatabaseModal extends Modal{
                 thead.appendChild(tr);
                 tableIndex.appendChild(thead);
 
+                let indexExists = false;
 
                 response.index.forEach(index => {
                     const name = index.name;
@@ -173,13 +174,64 @@ class DatabaseModal extends Modal{
                     tbody.appendChild(tr);
                     if(name == databaseSettings.settings.name){
                         tr.classList.add('selected');
+                        indexExists = true;
                     }
 
                 });
 
                 tableIndex.appendChild(tbody);
                 resultsContainer.appendChild(tableIndex);
-                
+
+                if(indexExists){
+
+                    const removeBtn = document.createElement('input');
+                    removeBtn.type = 'button';
+                    removeBtn.value = 'Remove Index';
+                    removeBtn.classList.add('remove-btn');
+                    resultsContainer.appendChild(removeBtn);
+
+                    removeBtn.addEventListener('click', () => {
+                        
+                        startLoader(resultsContainer.parentElement, '10%');
+
+                        this.botController.removeIndex(databaseSettings)
+                            .then(response => {
+                                globalNotification.show('Index removed', NOTIFICATION_SUCCESS);
+                                this.#getIndexDatabase(databaseSettings, resultsContainer);
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                globalNotification.show('Error removing index', NOTIFICATION_ERROR)
+                            })
+                            .finally(() => stopLoader(resultsContainer.parentElement));
+
+                    });
+
+                }else{
+
+                    const createBtn = document.createElement('input');
+                    createBtn.type = 'button';
+                    createBtn.value = 'Create Index';
+                    createBtn.classList.add('create-btn');
+                    resultsContainer.appendChild(createBtn);
+
+                    createBtn.addEventListener('click', () => {
+                            
+                        startLoader(resultsContainer.parentElement, '10%');
+        
+                            this.botController.createIndex(databaseSettings)
+                                .then(response => {
+                                    globalNotification.show('Index created', NOTIFICATION_SUCCESS);
+                                    this.#getIndexDatabase(databaseSettings, resultsContainer);
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                    globalNotification.show('Error creating index', NOTIFICATION_ERROR)
+                                })
+                                .finally(() => stopLoader(resultsContainer.parentElement));
+        
+                        });
+                }
 
             })
             .catch(error => {})
@@ -354,7 +406,7 @@ class DatabaseModal extends Modal{
                 resultsContainer.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
 
             })
-            .catch(error => console.log(error))
+            .catch(error => resultsContainer.innerHTML = `<p class="error">Error</p>`)
             .finally(() => {
                 stopLoader(resultsContainer.parentElement);
             });

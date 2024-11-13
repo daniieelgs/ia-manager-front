@@ -839,7 +839,7 @@ class SettingsModal extends Modal {
                 let newProfile = inputNewProfile.value.trim();
 
                 let botConfig = this.apiConfig.getBotConfig();
-                botConfig[newProfile] = botConfig[profileSelector.value];
+                botConfig[newProfile] = {...botConfig[profileSelector.value]};
 
                 Object.keys(botConfig).forEach(key => botConfig[key].selected = false);
 
