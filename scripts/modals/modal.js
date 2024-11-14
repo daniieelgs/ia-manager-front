@@ -348,3 +348,12 @@ class NewApiModal extends AbstractModalQuestion {
 }
 
 
+class ErrorModal extends ModalQuestion{
+
+    constructor(msg = "") {
+        super(msg, true);
+        this.modal.classList.add('error-modal');
+        this.add_button('Close', 'close', '#676767');
+    }
+
+}

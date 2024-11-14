@@ -237,6 +237,8 @@
 
     box-sizing: border-box;
 
+    max-width: 80%;
+
 }
 
 .modal-question.show{
@@ -284,6 +286,14 @@
 .modal-question-button:disabled{
     cursor: not-allowed;
     background-color: #444 !important;
+}
+.modal-question.error-modal .modal-question-container{
+    background-color: #a80404ad;
+    color: #fff;
+    font-size: .8em;
+    font-weight: normal;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 30px;
 }
 
 .modal-api-inputs{

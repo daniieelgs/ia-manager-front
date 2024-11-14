@@ -64,6 +64,18 @@ const sendMessages = async (messages = null) => {
                             clearInterval(idIntervalTitle);
                         }
                     }, 10);  
+                }else if(data.error){
+                    console.error(data.error);
+                    clearInterval(idIntervalEllipsis);
+                    messageElement.remove();
+                    const [msgContent, msgElement] = setMessageBot('No se ha podido procesar tu respuesta. Verifica la configuración.');
+                    msgElement.classList.add('error', 'error-info');
+                    const modalError = new ErrorModal(data.error.message, true);
+                    msgElement.addEventListener('click', () => {    
+                        if (modalError.isOpen) return;
+                        modalError.open();
+                    });
+                    break;
                 }
             }
         }   
