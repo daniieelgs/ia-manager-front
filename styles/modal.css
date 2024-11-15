@@ -156,7 +156,7 @@
     width: max-content;
     height: fit-content;
     
-    z-index: 500;
+    z-index: 1000;
 
     font-size: .5em;
 

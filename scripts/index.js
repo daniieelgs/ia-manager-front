@@ -316,6 +316,7 @@ function clearFileCollection() {
 }
 
 function updateFileList(){
+
     clearFileList();
     clearFileList();
     clearFileList();
@@ -323,6 +324,10 @@ function updateFileList(){
     clearFileCollection();
     clearFileCollection();
     clearFileCollection();
+
+
+    startLoader(filesList);
+    filesList.style.minHeight = '100px';
 
     botController.getFiles()
     .then(files => {
@@ -413,6 +418,10 @@ function updateFileList(){
 
         console.error(err);
 
+    })
+    .finally(() => {
+        fileList.style.minHeight = '0px';
+        stopLoader(filesList);
     });
     
 }
@@ -487,7 +496,7 @@ document.getElementById('documents-btn').addEventListener('click', e => {
     if(!!dbModal && dbModal.isOpen) return;
     if(!dbModal) {
         dbModal = new DatabaseModal(botController, confApi);
-        modal.on_close(() => {
+        dbModal.on_close(() => {
             updateFileList();
             clearChat();
         });

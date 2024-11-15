@@ -87,7 +87,19 @@ class SettingsModal extends Modal {
 
             for(let setting of this.confInputs.settings ?? []){
                 if(!setting.input.value) continue;
-                data.settings[setting.field] = setting.type === 'Boolean' ? setting.input.checked : setting.input.value;
+
+                if(setting.type === 'Boolean') data.settings[setting.field] = setting.input.checked;
+                else if(setting.type === 'Integer') data.settings[setting.field] = parseInt(setting.input.value);
+                else if(setting.type === 'Float') data.settings[setting.field] = parseFloat(setting.input.value);
+                else if(setting.type === 'Dict') {
+                    try{
+                        data.settings[setting.field] = JSON.parse(setting.input.value.replace(/'/g, '"'));
+                    }catch(e){
+                        globalNotification.show('Invalid JSON', NOTIFICATION_ERROR);
+                    }
+                }
+                else data.settings[setting.field] = setting.input.value;
+
             }
 
             for(let setting of this.confInputs.additional_settings ?? []){
@@ -367,7 +379,19 @@ class SettingsModal extends Modal {
                         else if(settings.type == "Boolean") input.type = "checkbox";
                         else if(settings.type == "Float") input.type = "number";
                         else if(settings.type == "List") input.type = "text";
-                        else if(settings.type == "Dict") input.type = "text";
+                        else if(settings.type == "Dict") {
+                            input.type = "text";
+                            input.addEventListener('blur', () => {
+
+                                try{    
+                                    let data = JSON.parse(input.value.replace(/'/g, '"'));
+                                    input.value = JSON.stringify(data, null, 2);
+                                }
+                                catch(e){
+                                    globalNotification.show('Invalid JSON', NOTIFICATION_ERROR);
+                                }
+                            });
+                        }
                         else input.type = "text";
                         
                         let container = document.createElement('div');
