@@ -10,7 +10,12 @@ class BaseStorage {
     }
 
     getItem(name) {
-        return JSON.parse(localStorage.getItem(name));
+        try{
+            return JSON.parse(localStorage.getItem(name));
+        }catch{
+            return null;
+        }
+        
     }
 
     removeItem(name) {
@@ -246,22 +251,28 @@ class ApiConfigStorage {
 
         const apiConfig = this.getApiConfig();
 
-        return {
-            "vector_database": apiConfig['vector_database'][botConfig[botSelected].vector_database] ?? apiConfig['vector_database']['default'],
-            "doc_database": apiConfig['doc_database'][botConfig[botSelected].doc_database] ?? apiConfig['doc_database']['default'],
-            "embedding": apiConfig['embedding'][botConfig[botSelected].embedding] ?? apiConfig['embedding']['default'],
-            "rerank": apiConfig['rerank'][botConfig[botSelected].rerank] ?? apiConfig['rerank']['default'],
-            "llm": apiConfig['llm'][botConfig[botSelected].llm] ?? apiConfig['llm']['default'],
-            "bot_settings": apiConfig['bot_settings'][botConfig[botSelected].bot_settings] ?? apiConfig['bot_settings']['default'],
-            "scorer": apiConfig['scorer'][botConfig[botSelected].scorer] ?? apiConfig['scorer']['default'],
-            "splitter": apiConfig['splitter'][botConfig[botSelected].splitter] ?? apiConfig['splitter']['default'],
+        try{
+            return {
+                "vector_database": apiConfig['vector_database'][botConfig[botSelected].vector_database] ?? apiConfig['vector_database']['default'],
+                "doc_database": apiConfig['doc_database'][botConfig[botSelected].doc_database] ?? apiConfig['doc_database']['default'],
+                "embedding": apiConfig['embedding'][botConfig[botSelected].embedding] ?? apiConfig['embedding']['default'],
+                "rerank": apiConfig['rerank'][botConfig[botSelected].rerank] ?? apiConfig['rerank']['default'],
+                "llm": apiConfig['llm'][botConfig[botSelected].llm] ?? apiConfig['llm']['default'],
+                "bot_settings": apiConfig['bot_settings'][botConfig[botSelected].bot_settings] ?? apiConfig['bot_settings']['default'],
+                "scorer": apiConfig['scorer'][botConfig[botSelected].scorer] ?? apiConfig['scorer']['default'],
+                "splitter": apiConfig['splitter'][botConfig[botSelected].splitter] ?? apiConfig['splitter']['default'],
+            }
+        }catch{
+            this.setBotConfig(DEFAULT_BOT_CONFIG);
+            this.setApiConfig(DEFAULT_CONFIG);
+            return null;
         }
 
     }
 
     resetBotConfig(bot) {
         const botConfig = this.getBotConfig();
-        const botSelected = botConfig[bot].selected;
+        botConfig[bot].selected;
 
         botConfig[bot] = DEFAULT_BOT_CONFIG['default'];
         botConfig[bot].selected = true;
