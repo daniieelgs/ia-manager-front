@@ -409,6 +409,11 @@ class SettingsModal extends Modal {
                             console.log(input.checked)
                             container.style.flexDirection = "row";
                             label.style.gap = "2px";
+                        }else if(settings.type == "Dict") {
+                            let value = (typeConfig.vendor == vendor.value ? typeConfig.settings[settings.field] : null) || (settings.default == "None" ? "" : settings.default);
+                            if(typeof value === 'object') value = JSON.stringify(value, null, 2);
+                            input.value = value;
+                            input.placeholder = settings.description;
                         }else {
                             input.value = (typeConfig.vendor == vendor.value ? typeConfig.settings[settings.field] : null) || (settings.default == "None" ? "" : settings.default);
                             input.placeholder = settings.description;
