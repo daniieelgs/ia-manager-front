@@ -98,3 +98,68 @@
 #chat-footer input[type="button"]#regenerate-btn:hover{
     background-color: #b8b8b8;
 }
+
+/* .message.ai code{
+    color: #525252;
+    font-style: italic;
+}
+
+.message.ai pre{
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    background-color: #575757;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+
+.message.ai pre code{
+    color: #fff;
+    font-style: normal;
+} */
+
+
+.code-block{
+    border-radius: 10px;
+}
+
+.code-block .top{
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border-radius: 10px 10px 0 0;
+    background-color: #253042;
+    border-bottom: 2px solid #575757;
+    padding: 5px;
+}
+
+.code-block .copy-btn{
+    display: inline-block;
+    background-image: url(../images/icons/copy.png);
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.code-block .lang{
+    display: inline-block;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.code-block code{
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+    background-color: #0d1117;
+    border-radius: 0 0 10px 10px;
+    color: #c9d1d9;
+}

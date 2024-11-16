@@ -23,6 +23,11 @@ const sendMessages = async (messages = null) => {
 
     setMessageUser(message);
 
+    chatViewer.scrollTo({
+        top: chatViewer.scrollHeight,
+        behavior: "smooth"
+    });
+
     let [idIntervalEllipsis, messageElement] = loadingEffect();
 
     try{
@@ -32,23 +37,26 @@ const sendMessages = async (messages = null) => {
         firstChunk = true;
         let cut = 0;
         let initTimer = new Date().getTime();
+        let wTime = 10;
         for await (const json of stream(await botController.queryBotStream(message, chatHistory.slice(0, -2), filter_files == 'own' ? filter_files_own : null))) {
             for(data of json){
 
                 if(data.response){
+
+                    totalResponse += data.response;
+
+                    wTime = (totalResponse.length / (new Date().getTime() - initTimer))/2;
 
                     if(firstChunk){
                         clearInterval(idIntervalEllipsis);
                         messageElement.textContent = '';
                         firstChunk = false;
                         console.log('Time:', new Date().getTime() - initTimer);
+                        initTimer = new Date().getTime();
+                        wTime = 10;
                     }
-
-                    totalResponse += data.response;
-
-                    cut = writeEfectMessageBot(totalResponse, 10, messageElement, cut);
-
-                    chatViewer.scrollTop = chatViewer.scrollHeight;
+                    
+                    cut = writeEfectMessageBot(totalResponse, wTime, messageElement, cut);
 
                 }else if(data.chunk){
                     addResult(data.chunk);
@@ -182,6 +190,40 @@ function writeEfectMessageBot(mesage, time = 10, messageContent = null, cut = 0)
                 messageContent.innerHTML = str;
 
                 i++;
+
+                chatViewer.scrollTo({
+                    top: chatViewer.scrollHeight,
+                    behavior: "smooth"
+                });
+
+                messageContent.querySelectorAll('pre code').forEach((el) => {
+                    if(el.classList.contains('hljs')) return;
+                    hljs.highlightElement(el);
+                    el.parentElement.classList.add('code-block');
+
+                    const container = document.createElement('div');
+                    container.classList.add('top');
+
+                    const copy = document.createElement('i');
+                    copy.classList.add('copy-btn');
+                    copy.title = 'Copiar';
+                    container.appendChild(copy);
+
+                    let lang = Array.from(el.classList).find(c => c.startsWith('language-'))?.replace('language-', '') ?? 'bash';
+                    if(lang == 'undefined') lang = 'bash';
+                    const langEl = document.createElement('span');
+                    langEl.classList.add('lang');
+                    langEl.textContent = lang;
+                    container.appendChild(langEl);
+
+                    el.parentElement.insertBefore(container, el);
+
+                    copy.addEventListener('click', () => {
+                        navigator.clipboard.writeText(el.textContent);
+                        globalNotification.show('Copiado.', NOTIFICATION_INFO);
+                    });
+                  });
+
             }
         }, time);
 

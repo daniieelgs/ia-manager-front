@@ -86,11 +86,13 @@ class SettingsModal extends Modal {
             };
 
             for(let setting of this.confInputs.settings ?? []){
-                if(!setting.input.value) continue;
+                // if(!setting.input.value) continue;
+
+                console.log(setting.field, ":", setting.input.value);
 
                 if(setting.type === 'Boolean') data.settings[setting.field] = setting.input.checked;
-                else if(setting.type === 'Integer') data.settings[setting.field] = parseInt(setting.input.value);
-                else if(setting.type === 'Float') data.settings[setting.field] = parseFloat(setting.input.value);
+                else if(setting.type === 'Integer') data.settings[setting.field] = !! setting.input.value.trim() ? parseInt(setting.input.value.trim()) : null;
+                else if(setting.type === 'Float') data.settings[setting.field] = !! setting.input.value.trim() ? parseFloat(setting.input.value.trim()) : null;
                 else if(setting.type === 'Dict') {
                     try{
                         data.settings[setting.field] = JSON.parse(setting.input.value.replace(/'/g, '"'));
@@ -98,12 +100,21 @@ class SettingsModal extends Modal {
                         globalNotification.show('Invalid JSON', NOTIFICATION_ERROR);
                     }
                 }
-                else data.settings[setting.field] = setting.input.value;
+                else data.settings[setting.field] = setting.input.value.trim() || null;
 
             }
 
             for(let setting of this.confInputs.additional_settings ?? []){
-                data[setting.field] = setting.type === 'boolean' ? setting.input.checked : setting.input.value;
+
+                let value;
+
+                if (setting.type === 'long_text') value = setting.input.value.trim() || null;
+                else if (setting.type === 'select') value = setting.input.value.trim();
+                else if (setting.type === 'number') value = !! setting.input.value.trim() ? parseInt(setting.input.value) : null;
+                else if (setting.type === 'text') value = setting.input.value.trim() || null;
+                else if (setting.type === 'boolean') value = setting.input.checked;
+
+                data[setting.field] = value;
             }
             return data;
         }
@@ -148,11 +159,12 @@ class SettingsModal extends Modal {
 
                         if(response.status == 422){
                             console.log(response.data);
-                            let data = response.data.message.replace(/'/g, '"');
-                            data = JSON.parse(data);
+                            let data = response.data.message ? JSON.parse(response.data.message.replace(/'/g, '"')) : response.data.errors;
                             for(let field in data){
                                 const p = document.createElement('p');
-                                p.innerHTML = `<span class="field">${field}</span>: ${data[field]}`;
+                                let value = data[field];
+                                if(typeof value === 'object') value = JSON.stringify(value, null, 2);
+                                p.innerHTML = `<span class="field">${field}</span>: ${value}`;
                                 p.classList.add('field-error');
                                 resultContainer.appendChild(p);
                             }
@@ -791,13 +803,18 @@ class SettingsModal extends Modal {
                             settingsList.classList.add('settings-list');
                             for(let setting in settings){
                                 let li = document.createElement('li');
-                                li.innerHTML = `<span class="field">${setting}</span>: ${settings[setting]}`;
+                                let value = settings[setting];
+                                
+                                li.innerHTML = `<span class="field">${setting}</span>: ${value}`;
                                 settingsList.appendChild(li);
                             }
 
                             for(let setting in additional_settings){
                                 let li = document.createElement('li');
-                                li.innerHTML = `<span class="field">${setting}</span>: ${additional_settings[setting]}`;
+                                let value = additional_settings[setting];
+                                if(typeof value === 'object') value = JSON.stringify(value, null, 2);
+                                else if(typeof value === 'boolean') value = `<input type="checkbox" ${value ? 'checked' : ''} onclick="return false;">`;
+                                li.innerHTML = `<span class="field">${setting}</span>: ${value}`;
                                 settingsList.appendChild(li);
                             }
 

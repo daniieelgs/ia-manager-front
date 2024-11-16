@@ -110,6 +110,18 @@ const TYPES = [
                 type: "boolean",
                 description: "Scorer",
                 value: true
+            },
+            {
+                name: "stream_chunks",
+                type: "boolean",
+                description: "Stream Chunks",
+                value: true
+            },
+            {
+                name: "generate_title",
+                type: "boolean",
+                description: "Generate Title",
+                value: true
             }
         ]
     },
@@ -122,5 +134,5 @@ const TYPES = [
         name: "Splitter",
         conf: "splitter",
         vendor: "splitter",
-    }
+    }, 
 ]

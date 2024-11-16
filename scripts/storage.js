@@ -145,7 +145,9 @@ const DEFAULT_CONFIG = {
             "mult_top_k": 10,
             "top_history": null,
             "add_thumbnail": true,
-            "scorer": true
+            "scorer": true,
+            "stream_chunks": true,
+            "generate_title": true
         }
     },
 
