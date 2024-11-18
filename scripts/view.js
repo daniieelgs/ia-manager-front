@@ -7,7 +7,7 @@ function showResult(result) {
     const resultElement = document.createElement('div');
     resultElement.classList.add('result');
     const title = document.createElement('h4');
-    title.innerHTML = `${result.filename} [Page ${result.page}] (score: ${result.score}) <a target="_blank" href="${botController.getFileURL(result.filename)}#page=${result.page}">View</a>`;
+    title.innerHTML = `${result.filename ?? 'Unknown'} ${result.page ? `[Page ${result.page}]` : ''} ${result.score ? `(score: ${result.score})` : ''} <a target="_blank" href="${botController.getFileURL(result.filename)}#page=${result.page}">View</a>`;
     
     const content = document.createElement('p');
     content.innerHTML = result.text;
