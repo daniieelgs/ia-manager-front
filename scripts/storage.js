@@ -131,7 +131,7 @@ const DEFAULT_CONFIG = {
                 "api_version": "2024-05-01-preview",
                 "deployment_name": "gpt-4o-mini",
                 "model": "gpt-4o-mini",
-                "temperature": 0.4
+                "temperature": 0.7
             },
             "system_prompt": "This is a question answering system, answwer always in spanish",
             "qa_prompt": "Use the following pieces of context to answer the question at the end in detail with clear explanation. If you don't know the answer, just say that you don't know, don't try to make up an answer. Give answer in spanish.\n\n{context}\nQuestion: {question}\nHelpful Answer:",
