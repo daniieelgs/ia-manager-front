@@ -58,7 +58,6 @@ const TYPES = [
                     {
                         name: "VECTORSTORE",
                         value: 1,
-                        disabled: true
                     },
                     {
                         name: "DOCSTORE",
@@ -76,14 +75,8 @@ const TYPES = [
                         value: "hybrid"
                     },
                     {
-                        name: "SEMANTIC",
-                        value: "vector",
-                        disabled: true
-                    },
-                    {
-                        name: "DOCUMENT",
-                        value: "document",
-                        disabled: true
+                        name: "SINGLE",
+                        value: "single",
                     }
                 ]
             },
