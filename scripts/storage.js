@@ -147,7 +147,9 @@ const DEFAULT_CONFIG = {
             "add_thumbnail": true,
             "scorer": true,
             "stream_chunks": true,
-            "generate_title": true
+            "generate_title": true,
+            "neighbor_top_k": 2,
+            "neighbor_extends": 1
         }
     },
 
@@ -255,14 +257,14 @@ class ApiConfigStorage {
 
         try{
             return {
-                "vector_database": apiConfig['vector_database'][botConfig[botSelected].vector_database] ?? apiConfig['vector_database']['default'],
-                "doc_database": apiConfig['doc_database'][botConfig[botSelected].doc_database] ?? apiConfig['doc_database']['default'],
-                "embedding": apiConfig['embedding'][botConfig[botSelected].embedding] ?? apiConfig['embedding']['default'],
-                "rerank": apiConfig['rerank'][botConfig[botSelected].rerank] ?? apiConfig['rerank']['default'],
-                "llm": apiConfig['llm'][botConfig[botSelected].llm] ?? apiConfig['llm']['default'],
-                "bot_settings": apiConfig['bot_settings'][botConfig[botSelected].bot_settings] ?? apiConfig['bot_settings']['default'],
-                "scorer": apiConfig['scorer'][botConfig[botSelected].scorer] ?? apiConfig['scorer']['default'],
-                "splitter": apiConfig['splitter'][botConfig[botSelected].splitter] ?? apiConfig['splitter']['default'],
+                "vector_database": apiConfig['vector_database'][botConfig[botSelected].vector_database],
+                "doc_database": apiConfig['doc_database'][botConfig[botSelected].doc_database],
+                "embedding": apiConfig['embedding'][botConfig[botSelected].embedding],
+                "rerank": apiConfig['rerank'][botConfig[botSelected].rerank],
+                "llm": apiConfig['llm'][botConfig[botSelected].llm],
+                "bot_settings": apiConfig['bot_settings'][botConfig[botSelected].bot_settings],
+                "scorer": apiConfig['scorer'][botConfig[botSelected].scorer],
+                "splitter": apiConfig['splitter'][botConfig[botSelected].splitter],
             }
         }catch{
             this.setBotConfig(DEFAULT_BOT_CONFIG);

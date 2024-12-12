@@ -115,6 +115,18 @@ const TYPES = [
                 type: "boolean",
                 description: "Generate Title",
                 value: true
+            },
+            {
+                name: "neighbor_top_k",
+                type: "number",
+                description: "Neighbor Top K",
+                value: 2
+            },
+            {
+                name: "neighbor_extends",
+                type: "number",
+                description: "Neighbor Extends",
+                value: 1
             }
         ]
     },

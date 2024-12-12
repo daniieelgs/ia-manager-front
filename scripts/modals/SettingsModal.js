@@ -72,7 +72,10 @@ class SettingsModal extends Modal {
                         add_thumbnail: apiConf.bot_settings[this.confInputs.bot_config.bot_settings].add_thumbnail,
                         mult_top_k: apiConf.bot_settings[this.confInputs.bot_config.bot_settings].mult_top_k,
                         scorer: apiConf.bot_settings[this.confInputs.bot_config.bot_settings].scorer,
-                        top_history: apiConf.bot_settings[this.confInputs.bot_config.bot_settings].top_history
+                        top_history: apiConf.bot_settings[this.confInputs.bot_config.bot_settings].top_history,
+                        generate_title: apiConf.bot_settings[this.confInputs.bot_config.bot_settings].generate_title,
+                        neighbor_top_k: apiConf.bot_settings[this.confInputs.bot_config.bot_settings].neighbor_top_k,
+                        neighbor_extends: apiConf.bot_settings[this.confInputs.bot_config.bot_settings].neighbor_extends,
                     }
 
                 };
@@ -98,6 +101,13 @@ class SettingsModal extends Modal {
                         data.settings[setting.field] = JSON.parse(setting.input.value.replace(/'/g, '"'));
                     }catch(e){
                         globalNotification.show('Invalid JSON', NOTIFICATION_ERROR);
+                    }
+                }
+                else if(setting.type === 'List') {
+                    try{
+                        data.settings[setting.field] = JSON.parse(setting.input.value.replace(/'/g, '"'));
+                    }catch(e){
+                        globalNotification.show('Invalid list', NOTIFICATION_ERROR);
                     }
                 }
                 else data.settings[setting.field] = setting.input.value.trim() || null;
@@ -416,6 +426,8 @@ class SettingsModal extends Modal {
 
                         input.id = settings.field;
 
+                        console.log("Name: ", settings.field, "Type: ", settings.type);
+
                         if(settings.type == "Boolean") {
                             input.checked = (typeConfig.vendor?.toLowerCase() == vendor.value?.toLowerCase() ? typeConfig.settings[settings.field] : false) || (settings.default == "None" ? false : settings.default == "True");
                             console.log(input.checked)
@@ -426,6 +438,22 @@ class SettingsModal extends Modal {
                             if(typeof value === 'object') input.value = JSON.stringify(value, null, 2);
                             else input.value = value;
                             input.placeholder = settings.description;
+                        }else if(settings.type == "List") {
+                            let value = (typeConfig.vendor?.toLowerCase() == vendor.value?.toLowerCase() ? typeConfig.settings[settings.field] : null) || (settings.default == "None" ? "" : settings.default);
+                            if(typeof value === 'object') input.value = JSON.stringify(value, null, 2);
+                            else input.value = value;
+                            input.placeholder = settings.description;
+
+                            input.addEventListener('blur', () => {
+                                try{
+                                    let data = JSON.parse(input.value.replace(/'/g, '"'));
+                                    input.value = JSON.stringify(data, null, 2);
+                                }
+                                catch(e){
+                                    globalNotification.show('Invalid list', NOTIFICATION_ERROR);
+                                }
+                            });
+
                         }else {
                             input.value = (typeConfig.vendor?.toLowerCase() == vendor.value?.toLowerCase() ? typeConfig.settings[settings.field] : null) || (settings.default == "None" ? "" : settings.default);
                             input.placeholder = settings.description;
@@ -752,6 +780,12 @@ class SettingsModal extends Modal {
                 const h2 = document.createElement('h2');
                 h2.innerHTML = type.name;
             
+                const checkBoxEnable = document.createElement('input');
+                checkBoxEnable.type = 'checkbox';
+                checkBoxEnable.checked = botConfig[profileSelector.value][type.conf] != null;
+
+                console.log("Type Name: ", type.name, "Conf: ", botConfig[profileSelector.value][type.conf]);
+
                 let profiles = Object.keys(apiConf[type.conf]);
 
                 let profileSelectorType = document.createElement('select');
@@ -766,11 +800,11 @@ class SettingsModal extends Modal {
 
                 profileSelectorType.append(...options);
 
-                
                 const buildSection = () => {
                     
                     section.innerHTML = '';
                     section.appendChild(h2);
+                    section.appendChild(checkBoxEnable);
                     section.appendChild(profileSelectorType);
 
                     let data = {...apiConf[type.conf][profileSelectorType.value]};
@@ -830,6 +864,22 @@ class SettingsModal extends Modal {
 
                 profileSelectorType.addEventListener('change', buildSection);
 
+                const checkBoxEnableListener = () => {
+                
+                    if(checkBoxEnable.checked){
+                        profileSelectorType.removeAttribute('disabled');
+                        section.classList.remove('disabled');
+                        buildSection();
+                    }else{
+                        profileSelectorType.setAttribute('disabled', 'disabled');
+                        section.classList.add('disabled');
+                        this.confInputs.bot_config[type.conf] = null;
+                    }
+                
+                }
+                checkBoxEnableListener();
+                checkBoxEnable.addEventListener('change', checkBoxEnableListener);
+                
 
                 preview.appendChild(section);
 

@@ -609,6 +609,18 @@ i.close-modal:hover{
     padding: 0 10px;
 }
 
+
+.modal-settings > .settings-content .preview .preview-section.disabled{
+    opacity: .5;
+    background-color: #00000044;
+    user-select: none;
+    cursor: not-allowed;
+}
+
+.modal-settings > .settings-content .preview .preview-section.disabled select{
+    cursor: inherit;
+}
+
 .modal-settings > .settings-content .preview .preview-section > p{
     font-size: 1.2em;
     margin-left: 20px;
