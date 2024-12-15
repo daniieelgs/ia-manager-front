@@ -265,7 +265,7 @@ class UsageModal extends Modal{
                 contextContainer.appendChild(contextItem);
                 _loadImagesCallbacks.push(() => {
                     if(loadImages.checked){
-                        const formattedText = textItem.replace(/\[img:([^\]]+)\]/g, '<img src="$1" alt="[img:url]" />');
+                        const formattedText = textItem.replace(/\[img:([^\]]+)\]/g, '<img src="$1" alt="$1" />');
                         contextItem.innerHTML = formattedText;
                     }else{
                         contextItem.innerHTML = textItem;
