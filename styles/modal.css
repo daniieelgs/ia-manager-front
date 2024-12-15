@@ -881,3 +881,127 @@ i.close-modal:hover{
 .database-content input[type="button"].create-btn:hover{
     background-color: #66af4f;
 }
+
+.usage-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    width: 100%;
+    height: 100%;
+
+    /* overflow-y: auto; */
+}
+
+.usage-content h2{
+    font-size: 1.5em;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.usage-content .chart-section{
+    grid-column: 1 / 2;
+    width: 100%;
+    height: 90%;
+    position: relative;
+}
+
+.usage-content .chart-section i.download-btn{
+    display: inline-block;
+    background-image: url(../images/icons/download.png);
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    opacity: .6;
+    cursor: pointer;
+    margin: 0 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.usage-content .chart-section > canvas{
+    width: 100% !important;
+    height: 90% !important;
+}
+
+.usage-content .all-context-content{
+    grid-column: 2 / 3;
+    grid-row: 1 / 4;
+    width: 100%;
+    height: 90%;
+    overflow-y: auto;
+}
+
+.usage-content .all-context-content .context-section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.usage-content .all-context-content .context-section h2{
+    font-size: 1.5em;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.usage-content .all-context-content .context-section .context-container{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding:10px;
+}
+
+.usage-content .all-context-content .context-section .context-container.show{
+    display: flex;
+}
+
+.usage-content .all-context-content .context-section .context-container .context-item{
+    width: 100%;
+    height: max-content;
+    font-family: 'Courier New', Courier, monospace;
+    word-wrap: break-word;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin: 0;
+}
+
+.usage-content .all-context-content .context-section .context-container .context-item img{
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+}
+
+.usage-content .all-context-content .context-section .context-title{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.usage-content .all-context-content .context-section .context-title h2{
+    margin-right: 20px;
+}
+
+.usage-content .copy-btn{
+    display: inline-block;
+    background-image: url(../images/icons/copy_black.png);
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    margin: 0 10px;
+}

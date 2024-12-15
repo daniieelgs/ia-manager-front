@@ -3,3 +3,19 @@
     overflow-y: auto;
     padding: 20px;
 }
+
+#view-container p{
+    word-wrap: break-word;
+}
+
+#view-container .result > h4{
+    cursor: pointer;
+}
+
+#view-container .result > p, #view-container .result > img{
+    display: none;
+}
+
+#view-container .result > p.show-content, #view-container .result > img.show-preview{
+    display: block;
+}

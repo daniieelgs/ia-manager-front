@@ -418,6 +418,8 @@ function updateFileList(){
 
         console.error(err);
 
+        setTimeout(updateFileList, 3000);
+
     })
     .finally(() => {
         fileList.style.minHeight = '0px';

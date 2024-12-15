@@ -8,6 +8,12 @@ const btnSend = document.getElementById('send-btn');
 const btnRegen = document.getElementById('regenerate-btn');
 const titleLabel = document.getElementById('title-chat');
 
+const btnUsage = document.createElement('span');
+btnUsage.classList.add('usage-btn');
+btnUsage.textContent = 'Usage';
+
+let chatUsage = null;
+
 let idInterval = null, idIntervalTitle = null;
 
 let chatHistory = [];
@@ -72,6 +78,13 @@ const sendMessages = async (messages = null) => {
                             clearInterval(idIntervalTitle);
                         }
                     }, 10);  
+                }else if(data.usage){
+
+                    if(!chatUsage)
+                        chatContainer.appendChild(btnUsage);
+
+                    chatUsage = data.usage;
+
                 }else if(data.error){
                     console.error(data.error);
                     clearInterval(idIntervalEllipsis);
@@ -153,11 +166,17 @@ function setMessageUser(msg){
     return setMessage({message: msg, type: 'human'});
 }
 
+function clearUsage(){
+    chatUsage = null;
+    btnUsage.remove();
+}
+
 function clearChat(){
     chatViewer.innerHTML = '';
     titleLabel.innerHTML = '';
     chatHistory = [];
     clearResults();
+    clearUsage();
 }
 
 function writeEfectMessageBot(mesage, time = 10, messageContent = null, cut = 0) {
@@ -254,6 +273,7 @@ function loadingEffect(){
     messageContent.style.letterSpacing = '0.5em';
     messageContent.style.width = `${widthPx}px`;
     messageContent.style.height = `${heightPx}px`;
+    messageContent.style.textWrap = 'nowrap';
 
     const totalWait = 5;
     let currentWait = 0;
@@ -299,4 +319,9 @@ btnRegen.addEventListener('click', () => {
     // const msgUser = messageContent.textContent;
     clearChat();
     // sendMessages(msgUser);
+});
+
+btnUsage.addEventListener('click', () => {
+    const modalUsage = new UsageModal(chatUsage);
+    modalUsage.open();
 });
