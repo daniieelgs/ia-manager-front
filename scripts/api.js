@@ -141,7 +141,7 @@ class BotController extends IBotController{
                 "top_history": conf.bot_settings.top_history,
                 "scorer": conf.bot_settings.scorer,
                 "stream": stream,
-                "stream_chunks": true,
+                "stream_chunks": conf.bot_settings.stream_chunks,
                 "generate_title": conf.bot_settings.generate_title,
                 "neighbor_top_k": conf.bot_settings.neighbor_top_k,
                 "neighbor_extends": conf.bot_settings.neighbor_extends
