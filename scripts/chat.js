@@ -308,9 +308,10 @@ function getLastMessageUser(){
     return [messageElement ? messageElement.querySelector('.message-content') : null, messageElement];
 }
 
-function markdownToHTML(markdownText) {
+function markdownToHTML(markdownText, transfomImageTag = true) {
     // Convierte el Markdown a HTML usando la librería 'marked'
-    const htmlContent = marked.marked(markdownText);
+    let htmlContent = marked.marked(markdownText);
+    if (transfomImageTag) htmlContent = htmlContent.replace(/\[img:([^\]]+)\]/g, '<img src="$1" alt="$1" />');
     return htmlContent;
   }
 
